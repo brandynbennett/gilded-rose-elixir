@@ -135,4 +135,11 @@ defmodule GildedRose do
 
     :ok
   end
+
+  @doc """
+  Replace all the items in inventory
+  """
+  def update_items(agent, items) do
+    Agent.update(agent, fn _ -> items end)
+  end
 end

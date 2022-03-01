@@ -70,4 +70,10 @@ defmodule GildedRoseTest do
 
     %Item{name: "Aged Brie", quality: 1} = brie
   end
+
+  test "update_items can update all items in the inventory" do
+    gilded_rose = GildedRose.new()
+    assert :ok = GildedRose.update_items(gilded_rose, ["foo"])
+    assert ["foo"] = GildedRose.items(gilded_rose)
+  end
 end
