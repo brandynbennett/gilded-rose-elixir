@@ -4,6 +4,13 @@ defmodule GildedRoseTest do
 
   alias GildedRose.Item
 
+  @vest "+5 Dexterity Vest"
+  @brie "Aged Brie"
+  @mongoose "Elixir of the Mongoose"
+  @sulfuras "Sulfuras, Hand of Ragnaros"
+  @backstage "Backstage passes to a TAFKAL80ETC concert"
+  @conjured "Conjured Mana Cake"
+
   test "interface specification" do
     gilded_rose = GildedRose.new()
     [%Item{} | _] = GildedRose.items(gilded_rose)
@@ -24,15 +31,14 @@ defmodule GildedRoseTest do
       conjured
     ] = GildedRose.items(gilded_rose)
 
-    assert %Item{name: "+5 Dexterity Vest", sell_in: 10, quality: 20} = vest
-    assert %Item{name: "Aged Brie", sell_in: 2, quality: 0} = brie
-    assert %Item{name: "Elixir of the Mongoose", sell_in: 5, quality: 7} = mongoose
-    assert %Item{name: "Sulfuras, Hand of Ragnaros", sell_in: 0, quality: 80} = sulfuras
+    assert %Item{name: @vest, sell_in: 10, quality: 20} = vest
+    assert %Item{name: @brie, sell_in: 2, quality: 0} = brie
+    assert %Item{name: @mongoose, sell_in: 5, quality: 7} = mongoose
+    assert %Item{name: @sulfuras, sell_in: 0, quality: 80} = sulfuras
 
-    assert %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: 15, quality: 20} =
-             backstage
+    assert %Item{name: @backstage, sell_in: 15, quality: 20} = backstage
 
-    assert %Item{name: "Conjured Mana Cake", sell_in: 3, quality: 6} = conjured
+    assert %Item{name: @conjured, sell_in: 3, quality: 6} = conjured
   end
 
   test "update_quality sell_in decreases by 1 for normal things" do
@@ -48,11 +54,11 @@ defmodule GildedRoseTest do
       conjured
     ] = GildedRose.items(gilded_rose)
 
-    assert %Item{name: "+5 Dexterity Vest", sell_in: 9} = vest
-    assert %Item{name: "Aged Brie", sell_in: 1} = brie
-    assert %Item{name: "Elixir of the Mongoose", sell_in: 4} = mongoose
-    assert %Item{name: "Backstage passes to a TAFKAL80ETC concert", sell_in: 14} = backstage
-    assert %Item{name: "Conjured Mana Cake", sell_in: 2} = conjured
+    assert %Item{name: @vest, sell_in: 9} = vest
+    assert %Item{name: @brie, sell_in: 1} = brie
+    assert %Item{name: @mongoose, sell_in: 4} = mongoose
+    assert %Item{name: @backstage, sell_in: 14} = backstage
+    assert %Item{name: @conjured, sell_in: 2} = conjured
   end
 
   test "update_quality quality decreases by 1 for normal things" do
@@ -61,8 +67,8 @@ defmodule GildedRoseTest do
 
     [vest, _, mongoose | _] = GildedRose.items(gilded_rose)
 
-    assert %Item{name: "+5 Dexterity Vest", quality: 19} = vest
-    assert %Item{name: "Elixir of the Mongoose", quality: 6} = mongoose
+    assert %Item{name: @vest, quality: 19} = vest
+    assert %Item{name: @mongoose, quality: 6} = mongoose
   end
 
   test "update_quality quality increases Brie by 1" do
@@ -71,7 +77,7 @@ defmodule GildedRoseTest do
 
     [_, brie | _] = GildedRose.items(gilded_rose)
 
-    assert %Item{name: "Aged Brie", quality: 1} = brie
+    assert %Item{name: @brie, quality: 1} = brie
   end
 
   test "update_quality quality is not negative" do
@@ -84,10 +90,10 @@ defmodule GildedRoseTest do
 
   test "update_quality sell_in cannot be more than 50" do
     gilded_rose = GildedRose.new()
-    :ok = GildedRose.update_items(gilded_rose, [Item.new("Aged Brie", 10, 50)])
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@brie, 10, 50)])
     :ok = GildedRose.update_quality(gilded_rose)
 
-    assert [%Item{name: "Aged Brie", sell_in: 9, quality: 50}] = GildedRose.items(gilded_rose)
+    assert [%Item{name: @brie, sell_in: 9, quality: 50}] = GildedRose.items(gilded_rose)
   end
 
   test "update_items can update all items in the inventory" do
