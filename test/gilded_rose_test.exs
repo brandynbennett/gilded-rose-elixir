@@ -80,6 +80,16 @@ defmodule GildedRoseTest do
     assert %Item{name: @brie, quality: 1} = brie
   end
 
+  test "update_quality quality increases Backstage by 1" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@backstage, 20, 0)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [backstage] = GildedRose.items(gilded_rose)
+
+    assert %Item{name: @backstage, sell_in: 19, quality: 1} = backstage
+  end
+
   test "update_quality quality is not negative" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new("foo", 0, 0)])
