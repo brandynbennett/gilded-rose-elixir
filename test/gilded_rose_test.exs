@@ -61,4 +61,13 @@ defmodule GildedRoseTest do
     %Item{name: "+5 Dexterity Vest", quality: 19} = vest
     %Item{name: "Elixir of the Mongoose", quality: 6} = mongoose
   end
+
+  test "update_quality quality increases Brie by 1" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [_, brie | _] = GildedRose.items(gilded_rose)
+
+    %Item{name: "Aged Brie", quality: 1} = brie
+  end
 end
