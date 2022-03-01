@@ -74,6 +74,14 @@ defmodule GildedRoseTest do
     assert %Item{name: "Aged Brie", quality: 1} = brie
   end
 
+  test "update_quality quality is not negative" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new("foo", 0, 0)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    assert [%Item{name: "foo", sell_in: -1, quality: 0}] = GildedRose.items(gilded_rose)
+  end
+
   test "update_items can update all items in the inventory" do
     gilded_rose = GildedRose.new()
     assert :ok = GildedRose.update_items(gilded_rose, ["foo"])
