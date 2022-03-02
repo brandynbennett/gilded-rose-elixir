@@ -19,35 +19,40 @@ defmodule GildedRose.Inventory do
     Enum.map(items, &update_item/1)
   end
 
-  defp update_item(%Item{name: @backstage, sell_in: sell_in} = item) when sell_in <= 0 do
-    Map.put(item, :sell_in, sell_in - 1)
-    |> Map.put(:quality, 0)
+  defp update_item(item) do
+    item
+    |> update_item_quality()
+    |> update_item_sell_in()
   end
 
-  defp update_item(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
+  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in} = item)
+       when sell_in <= 0 do
+    Map.put(item, :quality, 0)
+  end
+
+  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
        when sell_in <= 5 do
-    Map.put(item, :sell_in, sell_in - 1)
-    |> Map.put(:quality, quality + 3)
+    Map.put(item, :quality, quality + 3)
   end
 
-  defp update_item(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
+  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
        when sell_in <= 10 do
-    Map.put(item, :sell_in, sell_in - 1)
-    |> Map.put(:quality, quality + 2)
+    Map.put(item, :quality, quality + 2)
   end
 
-  defp update_item(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item) do
-    Map.put(item, :sell_in, sell_in - 1)
-    |> Map.put(:quality, quality + 1)
+  defp update_item_quality(%Item{name: @backstage, quality: quality} = item) do
+    Map.put(item, :quality, quality + 1)
   end
 
-  defp update_item(%Item{name: @brie, sell_in: sell_in, quality: quality} = item) do
-    Map.put(item, :sell_in, sell_in - 1)
-    |> Map.put(:quality, quality + 1)
+  defp update_item_quality(%Item{name: @brie, quality: quality} = item) do
+    Map.put(item, :quality, quality + 1)
   end
 
-  defp update_item(%Item{sell_in: sell_in, quality: quality} = item) do
+  defp update_item_quality(%Item{quality: quality} = item) do
+    Map.put(item, :quality, quality - 1)
+  end
+
+  defp update_item_sell_in(%Item{sell_in: sell_in} = item) do
     Map.put(item, :sell_in, sell_in - 1)
-    |> Map.put(:quality, quality - 1)
   end
 end
