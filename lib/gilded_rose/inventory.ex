@@ -6,6 +6,9 @@ defmodule GildedRose.Inventory do
   @brie "Aged Brie"
   @backstage "Backstage passes to a TAFKAL80ETC concert"
   @sulfuras "Sulfuras, Hand of Ragnaros"
+  @conjured "Conjured Mana Cake"
+
+  @decay_rate 1
 
   def new(items) do
     %__MODULE__{items: items}
@@ -44,11 +47,15 @@ defmodule GildedRose.Inventory do
   end
 
   defp update_item_quality(%Item{name: @backstage, quality: quality} = item) do
-    Map.put(item, :quality, increase_quality(quality, 1))
+    Map.put(item, :quality, increase_quality(quality, @decay_rate))
   end
 
   defp update_item_quality(%Item{name: @brie, quality: quality} = item) do
-    Map.put(item, :quality, increase_quality(quality, 1))
+    Map.put(item, :quality, increase_quality(quality, @decay_rate))
+  end
+
+  defp update_item_quality(%Item{name: @conjured, quality: quality} = item) do
+    Map.put(item, :quality, decrease_quality(quality, @decay_rate * 2))
   end
 
   defp update_item_quality(%Item{quality: quality} = item) when quality == 0 do
@@ -56,11 +63,11 @@ defmodule GildedRose.Inventory do
   end
 
   defp update_item_quality(%Item{sell_in: sell_in, quality: quality} = item) when sell_in <= 0 do
-    Map.put(item, :quality, decrease_quality(quality, 2))
+    Map.put(item, :quality, decrease_quality(quality, @decay_rate * 2))
   end
 
   defp update_item_quality(%Item{quality: quality} = item) do
-    Map.put(item, :quality, decrease_quality(quality, 1))
+    Map.put(item, :quality, decrease_quality(quality, @decay_rate))
   end
 
   defp increase_quality(quality, _amt) when quality >= 50, do: quality
