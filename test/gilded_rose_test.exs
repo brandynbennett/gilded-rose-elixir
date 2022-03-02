@@ -52,14 +52,13 @@ defmodule GildedRoseTest do
       mongoose,
       _,
       backstage,
-      conjured
+      _conjured
     ] = GildedRose.items(gilded_rose)
 
     assert %Item{name: @vest, sell_in: 9} = vest
     assert %Item{name: @brie, sell_in: 1} = brie
     assert %Item{name: @mongoose, sell_in: 4} = mongoose
     assert %Item{name: @backstage, sell_in: 14} = backstage
-    assert %Item{name: @conjured, sell_in: 2} = conjured
   end
 
   test "update_quality quality decreases by 1 for normal things" do
