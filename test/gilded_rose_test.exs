@@ -140,7 +140,6 @@ defmodule GildedRoseTest do
     assert %Item{name: @backstage, sell_in: -1, quality: 0} = backstage
   end
 
-  @tag :skip
   test "update_quality quality is not negative" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new("foo", 0, 0)])

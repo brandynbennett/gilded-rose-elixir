@@ -48,6 +48,10 @@ defmodule GildedRose.Inventory do
     Map.put(item, :quality, quality + 1)
   end
 
+  defp update_item_quality(%Item{quality: quality} = item) when quality == 0 do
+    item
+  end
+
   defp update_item_quality(%Item{quality: quality} = item) do
     Map.put(item, :quality, quality - 1)
   end
