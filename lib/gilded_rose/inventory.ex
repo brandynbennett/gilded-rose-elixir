@@ -9,6 +9,7 @@ defmodule GildedRose.Inventory do
   @conjured "Conjured Mana Cake"
 
   @decay_rate 1
+  @accelerated_decay 2
 
   def new(items) do
     %__MODULE__{items: items}
@@ -54,6 +55,11 @@ defmodule GildedRose.Inventory do
     Map.put(item, :quality, increase_quality(quality, @decay_rate))
   end
 
+  defp update_item_quality(%Item{name: @conjured, sell_in: sell_in, quality: quality} = item)
+       when sell_in <= 0 do
+    Map.put(item, :quality, decrease_quality(quality, @accelerated_decay * 2))
+  end
+
   defp update_item_quality(%Item{name: @conjured, quality: quality} = item) do
     Map.put(item, :quality, decrease_quality(quality, @decay_rate * 2))
   end
@@ -63,7 +69,7 @@ defmodule GildedRose.Inventory do
   end
 
   defp update_item_quality(%Item{sell_in: sell_in, quality: quality} = item) when sell_in <= 0 do
-    Map.put(item, :quality, decrease_quality(quality, @decay_rate * 2))
+    Map.put(item, :quality, decrease_quality(quality, @accelerated_decay))
   end
 
   defp update_item_quality(%Item{quality: quality} = item) do

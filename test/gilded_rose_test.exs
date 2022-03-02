@@ -164,6 +164,22 @@ defmodule GildedRoseTest do
     assert [%Item{name: "foo", sell_in: -1, quality: 48}] = GildedRose.items(gilded_rose)
   end
 
+  test "update_quality Conjured quality degrades twice as fast when sell_in is positive" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@conjured, 10, 50)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    assert [%Item{name: @conjured, sell_in: 9, quality: 48}] = GildedRose.items(gilded_rose)
+  end
+
+  test "update_quality Conjured quality degrades twice as fast when sell_in is negative" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@conjured, 0, 50)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    assert [%Item{name: @conjured, sell_in: -1, quality: 46}] = GildedRose.items(gilded_rose)
+  end
+
   test "update_quality does not affect Sulfuras" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new(@sulfuras, 0, 80)])
