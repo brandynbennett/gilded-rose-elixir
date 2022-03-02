@@ -16,7 +16,8 @@ defmodule GildedRose.Inventory do
     Enum.map(items, &update_item/1)
   end
 
-  defp update_item(%Item{sell_in: sell_in, quality: _quality} = item) do
+  defp update_item(%Item{sell_in: sell_in, quality: quality} = item) do
     Map.put(item, :sell_in, sell_in - 1)
+    |> Map.put(:quality, quality - 1)
   end
 end
