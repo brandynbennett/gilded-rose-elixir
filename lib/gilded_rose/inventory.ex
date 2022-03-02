@@ -37,52 +37,57 @@ defmodule GildedRose.Inventory do
     Map.put(item, :quality, 0)
   end
 
-  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
-       when sell_in <= 5 do
-    Map.put(item, :quality, increase_quality(quality, 3))
+  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in} = item) when sell_in <= 5 do
+    increase_quality(item, 3)
   end
 
-  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
-       when sell_in <= 10 do
-    Map.put(item, :quality, increase_quality(quality, 2))
+  defp update_item_quality(%Item{name: @backstage, sell_in: sell_in} = item) when sell_in <= 10 do
+    increase_quality(item, 2)
   end
 
-  defp update_item_quality(%Item{name: @backstage, quality: quality} = item) do
-    Map.put(item, :quality, increase_quality(quality, @decay_rate))
+  defp update_item_quality(%Item{name: @backstage} = item) do
+    increase_quality(item, @decay_rate)
   end
 
-  defp update_item_quality(%Item{name: @brie, quality: quality} = item) do
-    Map.put(item, :quality, increase_quality(quality, @decay_rate))
+  defp update_item_quality(%Item{name: @brie} = item) do
+    increase_quality(item, @decay_rate)
   end
 
-  defp update_item_quality(%Item{name: @conjured, sell_in: sell_in, quality: quality} = item)
-       when sell_in <= 0 do
-    Map.put(item, :quality, decrease_quality(quality, @accelerated_decay * 2))
+  defp update_item_quality(%Item{name: @conjured, sell_in: sell_in} = item) when sell_in <= 0 do
+    decrease_quality(item, @accelerated_decay * 2)
   end
 
-  defp update_item_quality(%Item{name: @conjured, quality: quality} = item) do
-    Map.put(item, :quality, decrease_quality(quality, @decay_rate * 2))
+  defp update_item_quality(%Item{name: @conjured} = item) do
+    decrease_quality(item, @decay_rate * 2)
   end
 
   defp update_item_quality(%Item{quality: quality} = item) when quality == 0 do
     item
   end
 
-  defp update_item_quality(%Item{sell_in: sell_in, quality: quality} = item) when sell_in <= 0 do
-    Map.put(item, :quality, decrease_quality(quality, @accelerated_decay))
+  defp update_item_quality(%Item{sell_in: sell_in} = item) when sell_in <= 0 do
+    decrease_quality(item, @accelerated_decay)
   end
 
-  defp update_item_quality(%Item{quality: quality} = item) do
-    Map.put(item, :quality, decrease_quality(quality, @decay_rate))
+  defp update_item_quality(%Item{} = item) do
+    decrease_quality(item, @decay_rate)
   end
 
-  defp increase_quality(quality, _amt) when quality >= 50, do: quality
+  defp increase_quality(%Item{quality: quality} = item, _amount) when quality >= 50 do
+    item
+  end
 
-  defp increase_quality(quality, amt), do: quality + amt
+  defp increase_quality(%Item{quality: quality} = item, amount) do
+    Map.put(item, :quality, quality + amount)
+  end
 
-  defp decrease_quality(quality, _amt) when quality == 0, do: 0
+  defp decrease_quality(%Item{quality: quality} = item, _amount) when quality == 0 do
+    item
+  end
 
-  defp decrease_quality(quality, amt), do: quality - amt
+  defp decrease_quality(%Item{quality: quality} = item, amount) do
+    Map.put(item, :quality, quality - amount)
+  end
 
   defp update_item_sell_in(%Item{name: @sulfuras} = item), do: item
 
