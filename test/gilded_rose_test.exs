@@ -90,6 +90,56 @@ defmodule GildedRoseTest do
     assert %Item{name: @backstage, sell_in: 19, quality: 1} = backstage
   end
 
+  test "update_quality quality increases Backstage by 2 if equal 10 days" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@backstage, 10, 0)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [backstage] = GildedRose.items(gilded_rose)
+
+    assert %Item{name: @backstage, sell_in: 9, quality: 2} = backstage
+  end
+
+  test "update_quality quality increases Backstage by 2 if less than 10 days, greater than 5" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@backstage, 6, 0)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [backstage] = GildedRose.items(gilded_rose)
+
+    assert %Item{name: @backstage, sell_in: 5, quality: 2} = backstage
+  end
+
+  test "update_quality quality increases Backstage by 3 if equal 5 days" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@backstage, 5, 0)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [backstage] = GildedRose.items(gilded_rose)
+
+    assert %Item{name: @backstage, sell_in: 4, quality: 3} = backstage
+  end
+
+  test "update_quality quality increases Backstage by 3 if equal 1" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@backstage, 1, 0)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [backstage] = GildedRose.items(gilded_rose)
+
+    assert %Item{name: @backstage, sell_in: 0, quality: 3} = backstage
+  end
+
+  test "update_quality quality goes to 0 if Backstage sell in goes beneath 0" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@backstage, 0, 50)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    [backstage] = GildedRose.items(gilded_rose)
+
+    assert %Item{name: @backstage, sell_in: -1, quality: 0} = backstage
+  end
+
   test "update_quality quality is not negative" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new("foo", 0, 0)])
