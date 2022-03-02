@@ -55,6 +55,10 @@ defmodule GildedRose.Inventory do
     item
   end
 
+  defp update_item_quality(%Item{sell_in: sell_in, quality: quality} = item) when sell_in <= 0 do
+    Map.put(item, :quality, decrease_quality(quality, 2))
+  end
+
   defp update_item_quality(%Item{quality: quality} = item) do
     Map.put(item, :quality, decrease_quality(quality, 1))
   end
