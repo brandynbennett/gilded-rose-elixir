@@ -32,20 +32,20 @@ defmodule GildedRose.Inventory do
 
   defp update_item_quality(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
        when sell_in <= 5 do
-    Map.put(item, :quality, quality + 3)
+    Map.put(item, :quality, increase_quality(quality, 3))
   end
 
   defp update_item_quality(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
        when sell_in <= 10 do
-    Map.put(item, :quality, quality + 2)
+    Map.put(item, :quality, increase_quality(quality, 2))
   end
 
   defp update_item_quality(%Item{name: @backstage, quality: quality} = item) do
-    Map.put(item, :quality, quality + 1)
+    Map.put(item, :quality, increase_quality(quality, 1))
   end
 
   defp update_item_quality(%Item{name: @brie, quality: quality} = item) do
-    Map.put(item, :quality, quality + 1)
+    Map.put(item, :quality, increase_quality(quality, 1))
   end
 
   defp update_item_quality(%Item{quality: quality} = item) when quality == 0 do
@@ -53,8 +53,14 @@ defmodule GildedRose.Inventory do
   end
 
   defp update_item_quality(%Item{quality: quality} = item) do
-    Map.put(item, :quality, quality - 1)
+    Map.put(item, :quality, decrease_quality(quality, 1))
   end
+
+  defp increase_quality(quality, amt), do: quality + amt
+
+  defp decrease_quality(quality, _amt) when quality == 0, do: 0
+
+  defp decrease_quality(quality, amt), do: quality - amt
 
   defp update_item_sell_in(%Item{sell_in: sell_in} = item) do
     Map.put(item, :sell_in, sell_in - 1)
