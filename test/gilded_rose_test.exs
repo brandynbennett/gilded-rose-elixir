@@ -10,6 +10,7 @@ defmodule GildedRoseTest do
   @sulfuras "Sulfuras, Hand of Ragnaros"
   @backstage "Backstage passes to a TAFKAL80ETC concert"
   @conjured "Conjured Mana Cake"
+  @max_quality 50
 
   test "interface specification" do
     gilded_rose = GildedRose.new()
@@ -153,7 +154,7 @@ defmodule GildedRoseTest do
     :ok = GildedRose.update_items(gilded_rose, [Item.new(@brie, 10, 50)])
     :ok = GildedRose.update_quality(gilded_rose)
 
-    assert [%Item{name: @brie, sell_in: 9, quality: 50}] = GildedRose.items(gilded_rose)
+    assert [%Item{name: @brie, sell_in: 9, quality: @max_quality}] = GildedRose.items(gilded_rose)
   end
 
   test "update_items can update all items in the inventory" do
