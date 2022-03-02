@@ -140,6 +140,7 @@ defmodule GildedRoseTest do
     assert %Item{name: @backstage, sell_in: -1, quality: 0} = backstage
   end
 
+  @tag :skip
   test "update_quality quality is not negative" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new("foo", 0, 0)])
@@ -148,6 +149,7 @@ defmodule GildedRoseTest do
     assert [%Item{name: "foo", sell_in: -1, quality: 0}] = GildedRose.items(gilded_rose)
   end
 
+  @tag :skip
   test "update_quality sell_in cannot be more than 50" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new(@brie, 10, 50)])
@@ -156,6 +158,7 @@ defmodule GildedRoseTest do
     assert [%Item{name: @brie, sell_in: 9, quality: @max_quality}] = GildedRose.items(gilded_rose)
   end
 
+  @tag :skip
   test "update_quality quality degrades twice as fast when sell_in is negatve" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new("foo", 0, 50)])
@@ -164,6 +167,7 @@ defmodule GildedRoseTest do
     assert [%Item{name: "foo", sell_in: -1, quality: 48}] = GildedRose.items(gilded_rose)
   end
 
+  @tag :skip
   test "update_quality does not affect Sulfuras" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new(@sulfuras, 0, 80)])
