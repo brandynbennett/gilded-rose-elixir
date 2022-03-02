@@ -19,6 +19,11 @@ defmodule GildedRose.Inventory do
     Enum.map(items, &update_item/1)
   end
 
+  defp update_item(%Item{name: @backstage, sell_in: sell_in} = item) when sell_in <= 0 do
+    Map.put(item, :sell_in, sell_in - 1)
+    |> Map.put(:quality, 0)
+  end
+
   defp update_item(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
        when sell_in <= 5 do
     Map.put(item, :sell_in, sell_in - 1)
