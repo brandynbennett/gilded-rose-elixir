@@ -164,6 +164,14 @@ defmodule GildedRoseTest do
     assert [%Item{name: "foo", sell_in: -1, quality: 48}] = GildedRose.items(gilded_rose)
   end
 
+  test "update_quality does not affect Sulfuras" do
+    gilded_rose = GildedRose.new()
+    :ok = GildedRose.update_items(gilded_rose, [Item.new(@sulfuras, 0, 80)])
+    :ok = GildedRose.update_quality(gilded_rose)
+
+    assert [%Item{name: @sulfuras, sell_in: 0, quality: 80}] = GildedRose.items(gilded_rose)
+  end
+
   test "update_items can update all items in the inventory" do
     gilded_rose = GildedRose.new()
     assert :ok = GildedRose.update_items(gilded_rose, ["foo"])
