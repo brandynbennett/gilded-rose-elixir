@@ -56,6 +56,8 @@ defmodule GildedRose.Inventory do
     Map.put(item, :quality, decrease_quality(quality, 1))
   end
 
+  defp increase_quality(quality, _amt) when quality >= 50, do: quality
+
   defp increase_quality(quality, amt), do: quality + amt
 
   defp decrease_quality(quality, _amt) when quality == 0, do: 0

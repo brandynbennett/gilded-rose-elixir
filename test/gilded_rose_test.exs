@@ -148,7 +148,6 @@ defmodule GildedRoseTest do
     assert [%Item{name: "foo", sell_in: -1, quality: 0}] = GildedRose.items(gilded_rose)
   end
 
-  @tag :skip
   test "update_quality sell_in cannot be more than 50" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new(@brie, 10, 50)])
