@@ -20,6 +20,12 @@ defmodule GildedRose.Inventory do
   end
 
   defp update_item(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
+       when sell_in <= 5 do
+    Map.put(item, :sell_in, sell_in - 1)
+    |> Map.put(:quality, quality + 3)
+  end
+
+  defp update_item(%Item{name: @backstage, sell_in: sell_in, quality: quality} = item)
        when sell_in <= 10 do
     Map.put(item, :sell_in, sell_in - 1)
     |> Map.put(:quality, quality + 2)
