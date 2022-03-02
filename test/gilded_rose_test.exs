@@ -165,7 +165,6 @@ defmodule GildedRoseTest do
     assert [%Item{name: "foo", sell_in: -1, quality: 48}] = GildedRose.items(gilded_rose)
   end
 
-  @tag :skip
   test "update_quality does not affect Sulfuras" do
     gilded_rose = GildedRose.new()
     :ok = GildedRose.update_items(gilded_rose, [Item.new(@sulfuras, 0, 80)])

@@ -5,6 +5,7 @@ defmodule GildedRose.Inventory do
 
   @brie "Aged Brie"
   @backstage "Backstage passes to a TAFKAL80ETC concert"
+  @sulfuras "Sulfuras, Hand of Ragnaros"
 
   def new(items) do
     %__MODULE__{items: items}
@@ -24,6 +25,8 @@ defmodule GildedRose.Inventory do
     |> update_item_quality()
     |> update_item_sell_in()
   end
+
+  defp update_item_quality(%Item{name: @sulfuras} = item), do: item
 
   defp update_item_quality(%Item{name: @backstage, sell_in: sell_in} = item)
        when sell_in <= 0 do
@@ -63,6 +66,8 @@ defmodule GildedRose.Inventory do
   defp decrease_quality(quality, _amt) when quality == 0, do: 0
 
   defp decrease_quality(quality, amt), do: quality - amt
+
+  defp update_item_sell_in(%Item{name: @sulfuras} = item), do: item
 
   defp update_item_sell_in(%Item{sell_in: sell_in} = item) do
     Map.put(item, :sell_in, sell_in - 1)
